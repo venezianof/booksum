@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Medical Agent - AI-powered medical information assistant">
+    <title>Medical Agent - Assistente Medico AI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1 class="header__title">
+                <span class="icon">🏥</span>
+                Medical Agent
+            </h1>
+            <p class="header__subtitle">Assistente AI per Informazioni Mediche</p>
+        </header>
+
+        <!-- Disclaimer Banner -->
+        <div class="disclaimer-banner">
+            <div class="disclaimer-banner__icon">⚠️</div>
+            <div class="disclaimer-banner__content">
+                <strong>Disclaimer:</strong> Questo strumento fornisce solo informazioni educative generali e non sostituisce il parere medico professionale. 
+                Consultare sempre un medico qualificato per diagnosi e trattamenti.
+            </div>
+        </div>
+
+        <!-- Welcome Instructions for First-Time Users -->
+        <div class="welcome-card">
+            <h2 class="welcome-card__title">Benvenuto! Come usare l'assistente</h2>
+            <ul class="welcome-card__list">
+                <li>✏️ Scrivi la tua domanda medica nel campo sottostante</li>
+                <li>📤 Premi "Invia Domanda" o usa Invio</li>
+                <li>⏳ Attendi mentre l'agente analizza la tua richiesta</li>
+                <li>💬 Ricevi una risposta dettagliata con fonti affidabili</li>
+            </ul>
+            <div class="welcome-card__examples">
+                <strong>Esempi di domande:</strong>
+                <ul>
+                    <li>"Che cos'è l'ipertensione?"</li>
+                    <li>"Quali sono i sintomi del diabete?"</li>
+                    <li>"Come si previene l'influenza?"</li>
+                    <li>"Cosa causa il mal di testa?"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <!-- Initial greeting message -->
+                <div class="message message--agent">
+                    <div class="message__avatar">🤖</div>
+                    <div class="message__content">
+                        <div class="message__bubble">
+                            Ciao! Sono il tuo assistente medico AI. 
+                            Puoi farmi domande su condizioni mediche, sintomi, prevenzione e salute generale. 
+                            Come posso aiutarti oggi?
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Form -->
+            <form class="chat-form" id="chatForm">
+                <div class="chat-form__input-group">
+                    <textarea 
+                        class="chat-form__input" 
+                        id="questionInput" 
+                        placeholder="Che cos'è l'ipertensione?"
+                        rows="2"
+                        required
+                        aria-label="Inserisci la tua domanda medica"
+                    ></textarea>
+                    <button 
+                        class="chat-form__button" 
+                        type="submit" 
+                        id="submitButton"
+                        aria-label="Invia domanda"
+                    >
+                        <span class="button-text">Invia Domanda</span>
+                        <span class="button-icon">📤</span>
+                    </button>
+                </div>
+                <div class="chat-form__hint">
+                    Premi Invio per inviare, Shift+Invio per andare a capo
+                </div>
+            </form>
+
+            <!-- Loading Spinner (hidden by default) -->
+            <div class="spinner-container" id="spinnerContainer" style="display: none;">
+                <div class="spinner"></div>
+                <p class="spinner-text">Sto analizzando la tua domanda...</p>
+            </div>
+
+            <!-- Error Message (hidden by default) -->
+            <div class="error-message" id="errorMessage" style="display: none;">
+                <div class="error-message__icon">❌</div>
+                <div class="error-message__content" id="errorContent"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Sviluppato con ❤️ per l'educazione medica</p>
+            <p class="footer__small">Versione 1.0 | 2024</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
