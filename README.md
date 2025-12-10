@@ -122,3 +122,21 @@ python align_data_bi_encoder_paraphrase.py --data_path /path/to/chapter_summary_
 Please create a GitHub issue if you have any questions, suggestions, requests or bug-reports. 
 We welcome PRs!
 
+
+## Medical Research Agent API
+
+A Flask API is available for the Medical Research Agent. This API serves as a backend to interact with the agent.
+
+To run the API:
+
+```bash
+./medical_agent/backend/run.sh
+```
+
+This script will set up a virtual environment, install dependencies, and start the server on port 5000 (default).
+
+Endpoints:
+- `GET /health`: Health check.
+- `POST /api/ask`: Ask a question to the agent. Body: `{ "question": "..." }`.
+- `/`: Serves static frontend assets.
+
