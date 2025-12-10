@@ -20,7 +20,8 @@ Paper link: https://arxiv.org/abs/2105.08209
 3. [Legal Note](#legal-note)
 4. [License](#license)
 5. [Usage](#usage)
-6. [Get Involved](#get-involved)
+6. [Medical Research Agent](#medical-research-agent)
+7. [Get Involved](#get-involved)
 
 ## Updates
 #### 4/15/2021
@@ -116,6 +117,34 @@ python align_data_bi_encoder_paraphrase.py --data_path /path/to/chapter_summary_
 1. The web archive links we collect the summaries from can often be unreliable, taking a long time to load. One way to fix this is to use higher sleep timeouts when one of the links throws an exception, which has been implemented in some of the scripts.
 2. Some links that constantly throw errors are aggregated in a file called - 'section_errors.txt'. This is useful to inspect which links are actually unavailable and re-running the data collection scripts for those specific links.
 3. Some paths in the provided files might throw errors depending on where the chapterized books have been downloaded. It is recommended to download them in booksum root directory for the scripts to work without requiring any modifications to the paths.
+
+
+## Medical Research Agent
+
+We've included a beginner-friendly **Medical Research Assistant Agent** as a practical demonstration of AI agent capabilities using LangChain. This subproject is completely isolated from the BookSum dataset tooling and serves as an educational resource for building AI-powered research assistants.
+
+### Features
+- 🤖 Interactive AI agent powered by LangChain
+- 🔍 Medical literature search and summarization
+- 🌐 RESTful API with Flask backend
+- 📚 Step-by-step tutorials for beginners
+- 🔧 Modular architecture with custom tools
+
+### Quick Start
+
+```bash
+cd medical_agent/
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env
+# Edit .env with your API keys
+python app.py
+```
+
+For detailed setup instructions, architecture details, and usage examples, see the **[Medical Agent README](medical_agent/README.md)**.
+
+⚠️ **Important**: The medical agent is for educational and research purposes only. It is not a substitute for professional medical advice.
 
 
 ## Get Involved
