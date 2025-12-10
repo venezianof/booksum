@@ -13,6 +13,8 @@ A beginner-friendly AI agent that helps users research medical topics using natu
 - [Project Structure](#project-structure)
 - [Configuration](#configuration)
 - [Development](#development)
+  - [Running Automated Tests](#running-automated-tests)
+  - [Manual Testing](#manual-testing)
 - [Troubleshooting](#troubleshooting)
 
 ## 🎯 Project Goals
@@ -200,7 +202,7 @@ python -c "import flask; import langchain; print('All dependencies installed suc
 # Make sure your virtual environment is activated
 # (you should see (venv) in your prompt)
 
-python app.py
+python backend/app.py
 ```
 
 You should see output similar to:
@@ -212,14 +214,25 @@ You should see output similar to:
 
 ### Access the Application
 
-1. **Web UI**: Open your browser and navigate to `http://localhost:5000`
-2. **API Endpoint**: Use curl or Postman to interact with the API
+1. **Health Check**: Verify server is running: `curl http://localhost:5000/health`
+2. **Web UI**: Open your browser and navigate to `http://localhost:5000`
+3. **API Endpoint**: Use curl or Postman to interact with the API
 
 Example API call:
 ```bash
-curl -X POST http://localhost:5000/api/query \
+curl -X POST http://localhost:5000/api/ask \
   -H "Content-Type: application/json" \
-  -d '{"query": "What are the latest treatments for diabetes?"}'
+  -d '{"question": "What are the latest treatments for diabetes?"}'
+```
+
+Expected response:
+```json
+{
+  "answer_text": "...",
+  "bullets": ["...", "..."],
+  "source_links": ["https://...", "https://..."],
+  "disclaimer": "⚠️ DISCLAIMER: This tool is for educational purposes only..."
+}
 ```
 
 ### Stop the Server
@@ -238,31 +251,25 @@ deactivate
 
 ```
 medical_agent/
-├── README.md                 # This file
+├── README.md                 # This file - setup, usage, and troubleshooting guide
 ├── requirements.txt          # Python dependencies
 ├── .env.example             # Example environment configuration
 ├── .env                     # Your local configuration (not in git)
-├── app.py                   # Main Flask application
-├── agent/                   # LangChain agent implementation
+│
+├── backend/                 # Flask backend application
 │   ├── __init__.py
-│   ├── medical_agent.py    # Core agent logic
-│   ├── tools.py            # Custom tools for medical research
-│   └── prompts.py          # Prompt templates
-├── api/                     # API routes and handlers
+│   ├── app.py              # Main Flask application and API endpoints
+│   ├── agent.py            # Medical Research Agent implementation
+│   ├── static/             # Frontend assets (CSS, JS)
+│   │   └── index.html
+│   └── templates/          # HTML templates (if applicable)
+│
+├── tests/                   # Automated test suite
 │   ├── __init__.py
-│   └── routes.py
-├── static/                  # Frontend assets (CSS, JS)
-│   ├── css/
-│   └── js/
-├── templates/               # HTML templates
-│   └── index.html
-├── tests/                   # Test suite
-│   ├── __init__.py
-│   ├── test_agent.py
-│   └── test_api.py
-└── utils/                   # Utility functions
-    ├── __init__.py
-    └── helpers.py
+│   └── test_api.py         # Flask API endpoint tests (pytest)
+│
+└── docs/                    # Documentation and guides
+    └── manual_test_plan.md  # Step-by-step manual testing guide for end-users
 ```
 
 ## ⚙️ Configuration
@@ -306,20 +313,53 @@ LOG_FILE=logs/app.log          # Log file path
 
 ## 🛠️ Development
 
-### Running Tests
+### Running Automated Tests
+
+Before running tests, ensure you're in the virtual environment with all dependencies installed.
 
 ```bash
+# Make sure your virtual environment is activated
+source venv/bin/activate  # On macOS/Linux
+# or
+venv\Scripts\activate     # On Windows
+
 # Run all tests
 pytest
 
-# Run with coverage
-pytest --cov=.
+# Run all tests with verbose output
+pytest -v
+
+# Run with coverage report
+pytest --cov=medical_agent
 
 # Run specific test file
-pytest tests/test_agent.py
+pytest tests/test_api.py
 
-# Run with verbose output
-pytest -v
+# Run tests matching a pattern
+pytest tests/test_api.py::TestAskEndpoint::test_ask_valid_question
+
+# Run with detailed output and stop on first failure
+pytest -vx
+```
+
+### Manual Testing
+
+For manual testing without running automated tests, we provide a comprehensive manual test plan:
+
+1. **Read the manual test plan**: See `docs/manual_test_plan.md` for step-by-step instructions
+2. **Start the server**: `python backend/app.py`
+3. **Test endpoints in browser or with curl**: Follow the test plan to verify all functionality
+4. **Check the logs**: Monitor the terminal for any errors
+
+**Quick manual test example**:
+```bash
+# In one terminal, start the server
+python backend/app.py
+
+# In another terminal, test the API
+curl -X POST http://localhost:5000/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What is diabetes?"}'
 ```
 
 ### Adding New Tools
@@ -328,7 +368,7 @@ To add a new tool to the agent:
 
 1. Create a new tool function in `agent/tools.py`
 2. Register it with the agent in `agent/medical_agent.py`
-3. Add tests in `tests/test_agent.py`
+3. Add tests in `tests/test_agent.py` or `tests/test_api.py`
 
 Example:
 ```python
@@ -358,44 +398,156 @@ flake8 .
 
 ## 🔧 Troubleshooting
 
-### Common Issues
+### Installation Issues
 
-**Issue: `ModuleNotFoundError: No module named 'flask'`**
-- Solution: Make sure your virtual environment is activated and run `pip install -r requirements.txt`
+**Issue: `ModuleNotFoundError: No module named 'flask'` or similar**
 
-**Issue: Port already in use**
-- Solution: Change the PORT in your `.env` file or stop the process using the port:
+- **Solution 1**: Ensure virtual environment is activated (look for `(venv)` prefix in prompt)
+- **Solution 2**: Run `pip install -r requirements.txt` again
+- **Solution 3**: Verify you're in the `medical_agent/` directory
+
+```bash
+# Verify installation
+python -c "import flask; import langchain; print('OK')"
+```
+
+**Issue: `pip install -r requirements.txt` fails with permission errors**
+
+- **Solution**: Use a virtual environment (recommended):
   ```bash
-  # On macOS/Linux
-  lsof -ti:5000 | xargs kill -9
-  
-  # On Windows
-  netstat -ano | findstr :5000
-  taskkill /PID <PID> /F
+  python3 -m venv venv
+  source venv/bin/activate
+  pip install --upgrade pip
+  pip install -r requirements.txt
   ```
 
-**Issue: API key errors**
-- Solution: Verify your `.env` file has the correct API keys set and that the file is in the correct location
+### Server Startup Issues
 
-**Issue: Import errors with LangChain**
-- Solution: Make sure you have both `langchain` and `langchain-community` installed:
+**Issue: Server won't start or crashes immediately**
+
+- **Check dependencies**: `python -c "from flask import Flask; print('Flask OK')"`
+- **Check Python version**: `python --version` (should be 3.8+)
+- **Check for syntax errors**: `python -m py_compile backend/app.py`
+
+**Issue: "Address already in use" (port 5000 is taken)**
+
+- **Solution**: Kill the process using the port:
+  ```bash
+  # On macOS/Linux:
+  lsof -ti:5000 | xargs kill -9
+  
+  # On Windows (PowerShell):
+  Get-Process -Id (Get-NetTCPConnection -LocalPort 5000).OwningProcess | Stop-Process -Force
+  ```
+
+- **Alternative**: Use a different port:
+  ```bash
+  PORT=5001 python backend/app.py
+  ```
+
+### Runtime Issues
+
+**Issue: API returns "Agent not initialized" (503 error)**
+
+- **Cause**: Agent failed to initialize at startup
+- **Solution**: Check terminal for error messages during startup
+- **Debug**: Ensure all environment variables in `.env` are set correctly:
+  ```bash
+  cp .env.example .env
+  # Edit .env with required values
+  ```
+
+**Issue: CORS errors when accessing from browser**
+
+- **Cause**: Flask-CORS not installed or not configured
+- **Solution**: 
+  ```bash
+  pip install Flask-CORS
+  # Verify it's in app.py: from flask_cors import CORS; CORS(app)
+  ```
+
+**Issue: Import errors with LangChain modules**
+
+- **Solution**: Install both langchain packages:
   ```bash
   pip install langchain langchain-community
   ```
 
-**Issue: CORS errors in browser**
-- Solution: Verify Flask-CORS is installed and configured in `app.py`
+**Issue: API key errors or authentication failures**
+
+- **Cause**: Missing or invalid API keys in `.env`
+- **Solution**: 
+  ```bash
+  cp .env.example .env
+  # Edit .env and add your actual API keys
+  ```
+
+### Restarting the Server
+
+If you need to restart the server after making code changes:
+
+1. **Stop the server**: Press `Ctrl+C` in the terminal running the server
+2. **Verify it stopped**: Run `curl http://localhost:5000/health` (should fail)
+3. **Restart**: Run `python backend/app.py` again
+
+**For development with auto-reload**:
+```bash
+# Flask automatically reloads on code changes in debug mode
+# If it doesn't, restart manually as shown above
+python backend/app.py
+```
+
+### Testing Issues
+
+**Issue: Tests fail with import errors**
+
+- **Solution**: Ensure you're running pytest from the `medical_agent/` directory:
+  ```bash
+  cd medical_agent
+  pytest tests/test_api.py
+  ```
+
+**Issue: Tests hang or timeout**
+
+- **Solution**: 
+  ```bash
+  # Run with timeout
+  pytest --timeout=30 tests/test_api.py
+  
+  # Or increase the timeout
+  pytest --timeout=60 tests/test_api.py
+  ```
+
+**Issue: "Connection refused" when running tests**
+
+- **Cause**: Flask test client is used but app isn't properly initialized
+- **Solution**: Verify app initialization in test file (it should use test client automatically)
 
 ### Getting Help
 
 If you encounter issues not covered here:
 
-1. Check the [main BookSum README](../README.md) for general guidelines
-2. Review the LangChain documentation at [python.langchain.com](https://python.langchain.com/)
-3. Open an issue on GitHub with:
-   - Your Python version (`python --version`)
-   - Error message or stack trace
+1. **Check the manual test plan**: `docs/manual_test_plan.md` has common issues and solutions
+2. **Review the main BookSum README**: `../README.md` for general guidelines
+3. **Check logs**: 
+   - Terminal output where server is running
+   - Browser console (F12 → Console tab)
+4. **Open an issue on GitHub** with:
+   - Your Python version: `python --version`
+   - Your OS (Windows/macOS/Linux)
+   - Full error message or stack trace
    - Steps to reproduce the issue
+
+### Health Check Endpoint
+
+To verify the server is running correctly:
+
+```bash
+curl http://localhost:5000/health
+# Should return: {"status": "healthy", "agent": "ready"}
+```
+
+If this returns an error, the server is not running or failed to start.
 
 ## 📚 Additional Resources
 
