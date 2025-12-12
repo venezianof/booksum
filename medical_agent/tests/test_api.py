@@ -228,11 +228,14 @@ class TestAskEndpoint:
         assert isinstance(data['source_links'], list)
         assert isinstance(data['disclaimer'], str)
 
-        # Check that lists contain strings
+        # Check that bullets are strings and sources are structured dicts
         for bullet in data['bullets']:
             assert isinstance(bullet, str)
+
         for link in data['source_links']:
-            assert isinstance(link, str)
+            assert isinstance(link, dict)
+            assert 'url' in link
+            assert isinstance(link['url'], str)
 
     def test_ask_with_special_characters(self, client):
         """Test handling of questions with special characters."""
