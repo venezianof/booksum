@@ -12,16 +12,40 @@ To facilitate future work, we trained and evaluated multiple extractive and abst
 Paper link: https://arxiv.org/abs/2105.08209
 
 <p align="center"><img src="misc/book_sumv4.png"></p>
+
+## 🚀 Getting Started with Agents (Italian Guides)
+
+**New to AI Agents? Start here!** We've created beginner-friendly guides in Italian to help you get started:
+
+- **[COME_PROVARE_AGENTI_NOVIZIO.md](COME_PROVARE_AGENTI_NOVIZIO.md)** - Complete beginner's guide (Italian) - Learn what agents are and try 3 different options
+- **[QUICK_START_AGENTI.md](QUICK_START_AGENTI.md)** - Quick start (5 minutes) - Get an agent running fast
+- **[ESEMPI_AGENTI.md](ESEMPI_AGENTI.md)** - Practical examples (Italian) - See real-world examples and build your own agent
+
+These guides cover:
+- ✅ What are AI Agents?
+- ✅ How to run the Medical Research Agent
+- ✅ How to run interactive Jupyter notebooks
+- ✅ How to create your own custom agent
+- ✅ Troubleshooting common issues
+
+**Pick your learning style:**
+| Want to... | Read... |
+|-----------|---------|
+| Understand everything in detail | [COME_PROVARE_AGENTI_NOVIZIO.md](COME_PROVARE_AGENTI_NOVIZIO.md) |
+| Get running in 5 minutes | [QUICK_START_AGENTI.md](QUICK_START_AGENTI.md) |
+| See working examples | [ESEMPI_AGENTI.md](ESEMPI_AGENTI.md) |
+
  
 ## Table of Contents
 
-1. [Updates](#updates)
-2. [Citation](#citation)
-3. [Legal Note](#legal-note)
-4. [License](#license)
-5. [Usage](#usage)
-6. [Medical Research Agent](#medical-research-agent)
-7. [Get Involved](#get-involved)
+1. [Getting Started with Agents (Italian Guides)](#getting-started-with-agents-italian-guides)
+2. [Updates](#updates)
+3. [Citation](#citation)
+4. [Legal Note](#legal-note)
+5. [License](#license)
+6. [Usage](#usage)
+7. [Medical Research Agent](#medical-research-agent)
+8. [Get Involved](#get-involved)
 
 ## Updates
 #### 4/15/2021
