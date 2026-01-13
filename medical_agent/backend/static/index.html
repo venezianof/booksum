@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Research Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .disclaimer {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+
+        .disclaimer strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .disclaimer p {
+            color: #856404;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .chat-container {
+            padding: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message-content {
+            display: inline-block;
+            padding: 15px 20px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message.agent .message-content {
+            background: #f1f3f5;
+            color: #333;
+            text-align: left;
+        }
+
+        .message.agent .answer-text {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .message.agent .bullets {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .message.agent .bullets li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .message.agent .bullets li:before {
+            content: "•";
+            position: absolute;
+            left: 10px;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .message.agent .sources {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .message.agent .sources h4 {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .message.agent .sources a {
+            color: #667eea;
+            text-decoration: none;
+            display: block;
+            margin: 5px 0;
+            font-size: 0.85em;
+        }
+
+        .message.agent .sources a:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .input-container {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        #questionInput {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #questionInput:focus {
+            border-color: #667eea;
+        }
+
+        #askButton {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #askButton:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #askButton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .examples {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .examples h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .example-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .example-btn {
+            padding: 10px 15px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9em;
+        }
+
+        .example-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .status.online {
+            color: #28a745;
+        }
+
+        .status.offline {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Medical Research Assistant</h1>
+            <p>Ask questions about medical topics and research</p>
+        </div>
+
+        <div class="disclaimer">
+            <strong>⚠️ Medical Disclaimer</strong>
+            <p>
+                This tool is for educational and research purposes only. It is NOT a substitute for professional medical advice, 
+                diagnosis, or treatment. Always consult with a qualified healthcare provider for medical decisions.
+            </p>
+        </div>
+
+        <div class="status" id="status">
+            Checking connection...
+        </div>
+
+        <div class="examples">
+            <h3>Example Questions:</h3>
+            <div class="example-buttons">
+                <button class="example-btn" onclick="askExample('What is diabetes?')">What is diabetes?</button>
+                <button class="example-btn" onclick="askExample('What are the symptoms of hypertension?')">Symptoms of hypertension</button>
+                <button class="example-btn" onclick="askExample('How does aspirin work?')">How does aspirin work?</button>
+                <button class="example-btn" onclick="askExample('What is the difference between Type 1 and Type 2 diabetes?')">Type 1 vs Type 2 diabetes</button>
+            </div>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <!-- Messages will appear here -->
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Researching your question...</p>
+        </div>
+
+        <div class="input-container">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="questionInput" 
+                    placeholder="Ask a medical research question..."
+                    onkeypress="handleKeyPress(event)"
+                />
+                <button id="askButton" onclick="askQuestion()">Ask</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isProcessing = false;
+
+        // Check server health on load
+        window.addEventListener('load', checkHealth);
+
+        async function checkHealth() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                const statusEl = document.getElementById('status');
+                
+                if (data.status === 'healthy') {
+                    statusEl.textContent = '✓ Connected to server';
+                    statusEl.className = 'status online';
+                } else {
+                    statusEl.textContent = '⚠ Server not ready';
+                    statusEl.className = 'status offline';
+                }
+            } catch (error) {
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = '✗ Cannot connect to server';
+                statusEl.className = 'status offline';
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !isProcessing) {
+                askQuestion();
+            }
+        }
+
+        function askExample(question) {
+            document.getElementById('questionInput').value = question;
+            askQuestion();
+        }
+
+        async function askQuestion() {
+            if (isProcessing) return;
+
+            const input = document.getElementById('questionInput');
+            const question = input.value.trim();
+
+            if (!question) {
+                alert('Please enter a question');
+                return;
+            }
+
+            isProcessing = true;
+            const askButton = document.getElementById('askButton');
+            askButton.disabled = true;
+            askButton.textContent = 'Processing...';
+
+            // Add user message
+            addMessage(question, 'user');
+            input.value = '';
+
+            // Show loading
+            const loading = document.getElementById('loading');
+            loading.classList.add('active');
+
+            try {
+                const response = await fetch('/api/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Hide loading
+                loading.classList.remove('active');
+
+                // Add agent response
+                addAgentMessage(data);
+
+            } catch (error) {
+                loading.classList.remove('active');
+                addMessage(`Error: ${error.message}. Please try again.`, 'agent');
+            } finally {
+                isProcessing = false;
+                askButton.disabled = false;
+                askButton.textContent = 'Ask';
+            }
+        }
+
+        function addMessage(text, sender) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = text;
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function addAgentMessage(data) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message agent';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            // Answer text
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'answer-text';
+            answerDiv.textContent = data.answer_text;
+            contentDiv.appendChild(answerDiv);
+            
+            // Bullets
+            if (data.bullets && data.bullets.length > 0) {
+                const bulletsList = document.createElement('ul');
+                bulletsList.className = 'bullets';
+                data.bullets.forEach(bullet => {
+                    const li = document.createElement('li');
+                    li.textContent = bullet;
+                    bulletsList.appendChild(li);
+                });
+                contentDiv.appendChild(bulletsList);
+            }
+            
+            // Sources
+            if (data.source_links && data.source_links.length > 0) {
+                const sourcesDiv = document.createElement('div');
+                sourcesDiv.className = 'sources';
+                
+                const sourcesTitle = document.createElement('h4');
+                sourcesTitle.textContent = 'Sources:';
+                sourcesDiv.appendChild(sourcesTitle);
+                
+                data.source_links.forEach(link => {
+                    const a = document.createElement('a');
+                    a.href = link;
+                    a.target = '_blank';
+                    a.textContent = link;
+                    sourcesDiv.appendChild(a);
+                });
+                
+                contentDiv.appendChild(sourcesDiv);
+            }
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
