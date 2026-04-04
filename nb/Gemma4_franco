@@ -649,11 +649,11 @@
     {
       "cell_type": "code",
       "metadata": {
-        "id": "a3fe8ee5",
-        "outputId": "806c75a9-6cbc-46f8-fec7-64d1b821cd80",
         "colab": {
           "base_uri": "https://localhost:8080/"
-        }
+        },
+        "id": "a3fe8ee5",
+        "outputId": "806c75a9-6cbc-46f8-fec7-64d1b821cd80"
       },
       "source": [
         "FastVisionModel.for_inference(model)  # Enable for inference!\n",
@@ -683,13 +683,14 @@
         "result = model.generate(**inputs, streamer = text_streamer, max_new_tokens = 128,\n",
         "                        use_cache = False, temperature = 1.0, top_p = 0.95, top_k = 64)"
       ],
-      "execution_count": null,
+      "execution_count": 56,
       "outputs": [
         {
           "output_type": "stream",
           "name": "stdout",
           "text": [
-            "\\left[ \\left[ \\Lambda _ { 0 "
+            "\\left[ \\left[ \\Lambda _ { 0 } ^ { \\prime } , \\partial _ { 1 } ^ { \\prime } \\right) = 0 _ { \\prime } \\beta _ { 2 } ^ { \\prime } , \\partial _ { 1 } ^ { \\prime } \\rangle = 0 _ { \\prime } \\hat { \\prime } \\bar { \\prime } } \\\\\n",
+            "{ { \\int } } \\left( \\frac { \\frac { \\frac { \\frac { \\frac { \\dots } { \\dots } { \\dots } \\\n"
           ]
         }
       ]
@@ -697,7 +698,11 @@
     {
       "cell_type": "code",
       "metadata": {
-        "id": "9e8580af"
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9e8580af",
+        "outputId": "6ba8776e-501f-472a-8585-c07599d14c29"
       },
       "source": [
         "model.save_pretrained(\"gemma_4_lora\")  # Local saving\n",
@@ -705,13 +710,28 @@
         "# model.push_to_hub(\"your_name/gemma_4_lora\", token = \"YOUR_HF_TOKEN\") # Online saving\n",
         "# processor.push_to_hub(\"your_name/gemma_4_lora\", token = \"YOUR_HF_TOKEN\") # Online saving"
       ],
-      "execution_count": null,
-      "outputs": []
+      "execution_count": 57,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "['gemma_4_lora/processor_config.json']"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 57
+        }
+      ]
     },
     {
       "cell_type": "code",
       "metadata": {
-        "id": "75ccb8a8"
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "75ccb8a8",
+        "outputId": "367bd36d-7b34-41c8-9355-b7e8c1a8f077"
       },
       "source": [
         "if False:\n",
@@ -755,8 +775,16 @@
         "_ = model.generate(**inputs, streamer = text_streamer, max_new_tokens = 128,\n",
         "                   use_cache = False, temperature = 1.0, top_p = 0.95, top_k = 64)"
       ],
-      "execution_count": null,
-      "outputs": []
+      "execution_count": 58,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\\frac { \\partial } { \\mu } ^ { \\mu } \\partial _ { \\mu } ^ { \\mu } \\frac { \\partial } { \\mu } ^ { \\mu } \\partial _ { \\mu } ^ { \\mu } \\left( \\frac { \\frac { \\frac { \\frac { \\dots } { \\mu } ^ { \\mu } } { \\mu } ^ { \\mu } } { \\partial _ { \\mu } } \\right) = 0 ,<turn|>\n"
+          ]
+        }
+      ]
     },
     {
       "cell_type": "code",
@@ -772,7 +800,7 @@
         "# To export and save to your Hugging Face account\n",
         "if False: model.push_to_hub_merged(\"YOUR_USERNAME/unsloth_finetune\", processor, token = \"YOUR_HF_TOKEN\")"
       ],
-      "execution_count": null,
+      "execution_count": 59,
       "outputs": []
     },
     {
