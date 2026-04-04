@@ -649,7 +649,11 @@
     {
       "cell_type": "code",
       "metadata": {
-        "id": "240b1120"
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "240b1120",
+        "outputId": "b4b765b4-8f88-4ce6-ea64-77bffbb15222"
       },
       "source": [
         "model = FastVisionModel.get_peft_model(\n",
@@ -669,13 +673,25 @@
         "    target_modules = \"all-linear\",    # Optional now! Can specify a list if needed\n",
         ")"
       ],
-      "execution_count": null,
-      "outputs": []
+      "execution_count": 46,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Unsloth: Making `model.base_model.model.model.language_model` require gradients\n"
+          ]
+        }
+      ]
     },
     {
       "cell_type": "code",
       "metadata": {
-        "id": "5e430a59"
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "5e430a59",
+        "outputId": "74c8f847-425b-4ccd-ff2d-3db61431b0bc"
       },
       "source": [
         "from unsloth.trainer import UnslothVisionDataCollator\n",
@@ -717,13 +733,33 @@
         "    )\n",
         ")"
       ],
-      "execution_count": null,
-      "outputs": []
+      "execution_count": 47,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "warmup_ratio is deprecated and will be removed in v5.2. Use `warmup_steps` instead.\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Unsloth: Model does not have a default image size - using 512\n",
+            "Unsloth: Switching to float32 training since model cannot work with float16\n"
+          ]
+        }
+      ]
     },
     {
       "cell_type": "code",
       "metadata": {
-        "id": "80c95f68"
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "80c95f68",
+        "outputId": "297e9278-0c91-4911-e5b3-0c0f3a7669b0"
       },
       "source": [
         "# @title Show current memory stats\n",
@@ -733,19 +769,113 @@
         "print(f\"GPU = {gpu_stats.name}. Max memory = {max_memory} GB.\")\n",
         "print(f\"{start_gpu_memory} GB of memory reserved.\")"
       ],
-      "execution_count": null,
-      "outputs": []
+      "execution_count": 48,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "GPU = Tesla T4. Max memory = 14.563 GB.\n",
+            "11.33 GB of memory reserved.\n"
+          ]
+        }
+      ]
     },
     {
       "cell_type": "code",
       "metadata": {
-        "id": "b05cd034"
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 513
+        },
+        "id": "b05cd034",
+        "outputId": "063ca033-909a-431f-cf83-49489ea5d8a2"
       },
       "source": [
         "trainer_stats = trainer.train()"
       ],
       "execution_count": null,
-      "outputs": []
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': 2}.\n",
+            "==((====))==  Unsloth - 2x faster free finetuning | Num GPUs used = 1\n",
+            "   \\\\   /|    Num examples = 68,686 | Num Epochs = 1 | Total steps = 60\n",
+            "O^O/ \\_/ \\    Batch size per device = 1 | Gradient accumulation steps = 4\n",
+            "\\        /    Data Parallel GPUs = 1 | Total batch size (1 x 4 x 1) = 4\n",
+            " \"-____-\"     Trainable parameters = 59,719,680 of 5,182,897,696 (1.15% trained)\n"
+          ]
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.HTML object>"
+            ],
+            "text/html": [
+              "\n",
+              "    <div>\n",
+              "      \n",
+              "      <progress value='12' max='60' style='width:300px; height:20px; vertical-align: middle;'></progress>\n",
+              "      [12/60 01:22 < 06:35, 0.12 it/s, Epoch 0.00/1]\n",
+              "    </div>\n",
+              "    <table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              " <tr style=\"text-align: left;\">\n",
+              "      <th>Step</th>\n",
+              "      <th>Training Loss</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <td>1</td>\n",
+              "      <td>15.259756</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <td>2</td>\n",
+              "      <td>16.069773</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <td>3</td>\n",
+              "      <td>11.062496</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <td>4</td>\n",
+              "      <td>8.424790</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <td>5</td>\n",
+              "      <td>6.562573</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <td>6</td>\n",
+              "      <td>5.516308</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <td>7</td>\n",
+              "      <td>4.453639</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <td>8</td>\n",
+              "      <td>3.628214</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <td>9</td>\n",
+              "      <td>3.436982</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <td>10</td>\n",
+              "      <td>3.084082</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table><p>"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
     },
     {
       "cell_type": "code",
