@@ -142,6 +142,25 @@ cp .env.example .env
 python app.py
 ```
 
+### Testing the Agent
+
+Quick test scripts are available to verify the agent works correctly:
+
+```bash
+# Quick base test (no server required)
+python test_agente.py
+
+# Full API test (starts server automatically)
+python test_agente_api.py
+
+# Or use the convenient bash script
+./testa_agente.sh base    # Base test
+./testa_agente.sh api     # API test
+./testa_agente.sh manuale # Manual testing
+```
+
+For detailed testing instructions and examples, see the **[Quick Test Guide](GUIDA_RAPIDA_TEST.md)** or **[Test README](README_TEST_AGENTE.md)**.
+
 For detailed setup instructions, architecture details, and usage examples, see the **[Medical Agent README](medical_agent/README.md)**.
 
 ⚠️ **Important**: The medical agent is for educational and research purposes only. It is not a substitute for professional medical advice.
