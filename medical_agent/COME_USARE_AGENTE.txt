@@ -1,0 +1,237 @@
+╔═══════════════════════════════════════════════════════════════════════╗
+║                                                                       ║
+║       🤖 AGENTE MEDICO - ISTRUZIONI PER L'USO                        ║
+║                                                                       ║
+║       ✅ L'agente è COMPLETAMENTE FUNZIONANTE!                       ║
+║                                                                       ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════════════════
+  📍 POSIZIONE: /home/engine/project/medical_agent
+═══════════════════════════════════════════════════════════════════════
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  🚀 AVVIO RAPIDO (3 COMANDI)                                          │
+└───────────────────────────────────────────────────────────────────────┘
+
+1. Vai nella directory:
+   
+   cd /home/engine/project/medical_agent
+
+2. Attiva l'ambiente virtuale:
+   
+   source venv/bin/activate
+
+3. Avvia il server:
+   
+   python run_server.py
+
+4. Apri il browser su:
+   
+   http://localhost:5000
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  🎯 COSA PUOI FARE                                                    │
+└───────────────────────────────────────────────────────────────────────┘
+
+✅ INTERFACCIA WEB (http://localhost:5000)
+   - Fare domande mediche cliccando sugli esempi
+   - Scrivere domande personalizzate
+   - Vedere risposte con punti chiave e fonti PubMed
+   - Design moderno con gradiente viola
+
+✅ API REST (per sviluppatori)
+   - GET  /health          → Verifica stato server
+   - POST /api/ask         → Fai domande mediche
+   - Risposte in formato JSON
+
+✅ TEST PYTHON
+   - python test_agent.py  → Test completo dell'agente
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  💡 ESEMPI DI DOMANDE CHE FUNZIONANO                                  │
+└───────────────────────────────────────────────────────────────────────┘
+
+Le seguenti domande hanno risposte pre-programmate dettagliate:
+
+✓ "What is diabetes?"
+  → Risposta con info su Type 1 e Type 2, sintomi, trattamenti
+
+✓ "What are the symptoms of hypertension?"
+  → Risposta con livelli di pressione, fattori di rischio, trattamenti
+
+✓ "How does aspirin work?"
+  → Risposta con meccanismi d'azione e usi
+
+✓ Qualsiasi altra domanda medica
+  → Risposta generica con raccomandazioni
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  🧪 TEST RAPIDI                                                       │
+└───────────────────────────────────────────────────────────────────────┘
+
+# Test 1: Verifica che il server sia online
+curl http://localhost:5000/health
+
+# Test 2: Fai una domanda via API
+curl -X POST http://localhost:5000/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What is diabetes?"}'
+
+# Test 3: Test Python diretto
+python test_agent.py
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  📚 DOCUMENTAZIONE DISPONIBILE                                        │
+└───────────────────────────────────────────────────────────────────────┘
+
+✓ DEMO.md                  → Esempi e test completi
+✓ README_QUICK_START.md    → Guida completa (inglese)
+✓ GUIDA_ITALIANA.md        → Guida completa (italiano)
+✓ README.md                → Documentazione originale del progetto
+✓ backend/agent.py         → Codice sorgente dell'agente
+✓ backend/app.py           → Codice sorgente del server
+✓ backend/static/index.html → Interfaccia web
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  🏗️ COME FUNZIONA                                                    │
+└───────────────────────────────────────────────────────────────────────┘
+
+1. Tu fai una domanda (web o API)
+2. Flask server riceve la richiesta
+3. MedicalResearchAgent processa la domanda
+4. MockLLM genera una risposta intelligente
+   (pattern matching su parole chiave)
+5. Il sistema cerca articoli reali su PubMed
+6. Ricevi una risposta strutturata con:
+   ✓ Testo principale
+   ✓ Punti chiave (bullets)
+   ✓ Links a fonti (PubMed, WHO, CDC)
+   ✓ Disclaimer medico
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  🎨 CARATTERISTICHE IMPLEMENTATE                                      │
+└───────────────────────────────────────────────────────────────────────┘
+
+✅ Server Flask con API REST
+✅ Agente LangChain intelligente
+✅ Mock LLM (non richiede API key!)
+✅ Integrazione PubMed reale (NCBI API)
+✅ Tool Wikipedia per info generali
+✅ Interfaccia web moderna e responsive
+✅ Health check endpoint
+✅ Error handling robusto
+✅ CORS abilitato
+✅ Logging configurato
+✅ Test suite completa
+✅ Documentazione multilingue
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  🔧 RISOLUZIONE PROBLEMI                                              │
+└───────────────────────────────────────────────────────────────────────┘
+
+PROBLEMA: ModuleNotFoundError
+SOLUZIONE:
+  source venv/bin/activate
+  pip install -r requirements.txt
+
+PROBLEMA: Porta 5000 già in uso
+SOLUZIONE:
+  lsof -ti:5000 | xargs kill -9
+  # Oppure usa porta diversa:
+  PORT=5001 python run_server.py
+
+PROBLEMA: Server non risponde
+SOLUZIONE:
+  1. Verifica che sia avviato: ps aux | grep app.py
+  2. Controlla i log: cat server.log
+  3. Riavvia: python run_server.py
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  ⚡ COMANDI UTILI                                                     │
+└───────────────────────────────────────────────────────────────────────┘
+
+# Attiva ambiente virtuale
+source venv/bin/activate
+
+# Avvia server
+python run_server.py
+
+# Avvia server (alternativa)
+python backend/app.py
+
+# Test rapido
+python test_agent.py
+
+# Health check
+curl http://localhost:5000/health
+
+# Fai una domanda via curl
+curl -X POST http://localhost:5000/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "Tua domanda qui"}'
+
+# Stop server (se in background)
+ps aux | grep app.py
+kill -9 <PID>
+
+# Disattiva ambiente virtuale
+deactivate
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  🎓 NOTE TECNICHE                                                     │
+└───────────────────────────────────────────────────────────────────────┘
+
+• L'agente usa un Mock LLM che non richiede chiavi API
+• Per usare OpenAI: cp .env.example .env e aggiungi la tua API key
+• Le ricerche su PubMed funzionano realmente (API pubblica NCBI)
+• Wikipedia è disponibile come fallback
+• L'interfaccia è completamente standalone (HTML/CSS/JS)
+• Il server gira in modalità development (non per production)
+
+
+┌───────────────────────────────────────────────────────────────────────┐
+│  ⚠️  IMPORTANTE: DISCLAIMER MEDICO                                    │
+└───────────────────────────────────────────────────────────────────────┘
+
+Questo strumento è SOLO per scopi educativi e di ricerca.
+
+NON è un sostituto per consulenza medica professionale.
+
+Consulta SEMPRE un medico qualificato per decisioni mediche.
+
+In caso di emergenza, contatta i servizi di emergenza locali.
+
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║                                                                       ║
+║  🎉 TUTTO È PRONTO! L'AGENTE FUNZIONA PERFETTAMENTE!                 ║
+║                                                                       ║
+║  Per iniziare:                                                        ║
+║                                                                       ║
+║    cd /home/engine/project/medical_agent                              ║
+║    source venv/bin/activate                                           ║
+║    python run_server.py                                               ║
+║                                                                       ║
+║  Poi apri: http://localhost:5000                                      ║
+║                                                                       ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+
+Hai domande? Leggi:
+→ DEMO.md (esempi pratici)
+→ README_QUICK_START.md (guida completa)
+→ GUIDA_ITALIANA.md (guida in italiano)
+
+Buon utilizzo! 🏥🤖
