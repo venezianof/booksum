@@ -2,7 +2,7 @@ import os
 import logging
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from agent import MedicalResearchAgent
+from backend.agent import MedicalResearchAgent
 
 # Configure logging
 logging.basicConfig(
